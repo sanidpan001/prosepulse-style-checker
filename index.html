@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProsePulse — Free Writing Style Checker | Passive Voice Checker &amp; Adverb Finder</title>
+<meta name="description" content="ProsePulse is a free writing style checker online: a passive voice checker with one-click active rewrites, an adverb finder, weasel-word and cliché detector, repeated-phrase scanner, and custom crutch-word lists. Unlimited free usage, no signup.">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  colors: { ink: '#1c1917', brand: '#fb7185', gold: '#facc15' },
+  fontFamily: { serif: ['Georgia','Cambria','Times New Roman','serif'], mono: ['ui-monospace','SFMono-Regular','Menlo','monospace'] }
+} } };
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { background: #1c1917; color: #e7e5e4; }
+  ::selection { background: #fb7185; color: #1c1917; }
+  .pp-scroll::-webkit-scrollbar { width: 10px; }
+  .pp-scroll::-webkit-scrollbar-track { background: #292524; }
+  .pp-scroll::-webkit-scrollbar-thumb { background: #57534e; border-radius: 8px; }
+  .hl { border-radius: 3px; padding: 0 2px; cursor: pointer; border-bottom: 2px solid; transition: filter .15s; }
+  .hl:hover { filter: brightness(1.35); }
+  .hl-passive { background: rgba(251,113,133,.22); border-color: #fb7185; }
+  .hl-adverb { background: rgba(250,204,21,.18); border-color: #facc15; }
+  .hl-weasel { background: rgba(251,146,60,.20); border-color: #fb923c; }
+  .hl-cliche { background: rgba(192,132,252,.22); border-color: #c084fc; }
+  .hl-crutch { background: rgba(56,189,248,.20); border-color: #38bdf8; }
+  .hl-repeat { background: rgba(163,230,53,.18); border-color: #a3e635; }
+  .hl-flash { outline: 3px solid #facc15; outline-offset: 2px; }
+  .issue-card { cursor: pointer; transition: transform .15s, border-color .15s; }
+  .issue-card:hover { transform: translateX(3px); }
+  .meter-track { height: 8px; background: #292524; border-radius: 999px; overflow: hidden; }
+  .meter-fill { height: 100%; border-radius: 999px; transition: width .5s ease; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .pulse-line { animation: pulseflow 3.2s ease-in-out infinite; }
+  @keyframes pulseflow { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
+  .editor-area { font-family: Georgia, Cambria, serif; font-size: 17px; line-height: 1.8; }
+  @media (max-width: 640px) { .editor-area { font-size: 15px; } }
+</style>
+</head>
+<body id="top" class="min-h-screen antialiased">
+
+<!-- HEADER -->
+<header class="sticky top-0 z-50 bg-ink/95 backdrop-blur border-b border-stone-800">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 py-3 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2.5">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+        <path d="M2 15 H7 L10 8 L14 22 L17 11 L19 15 H28" stroke="#fb7185" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="pulse-line"/>
+      </svg>
+      <span class="text-xl font-extrabold tracking-tight">Prose<span class="text-brand">Pulse</span></span>
+    </a>
+    <nav class="text-sm font-medium">
+      <a href="#top" class="text-stone-300 hover:text-gold mr-5 transition">Home</a>
+      <a href="https://fixoraa.tech" class="text-stone-300 hover:text-gold transition">More Tools</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="mx-auto max-w-6xl px-4 sm:px-6 pt-10 pb-6 text-center">
+  <span class="inline-flex items-center gap-2 bg-stone-800/80 border border-stone-700 rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide uppercase text-gold">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M6 0l1.8 3.6L12 4.2l-3 2.9.7 4.1L6 9.4 2.3 11.2l.7-4.1-3-2.9 4.2-.6z"/></svg>
+    Unlimited Free Usage
+  </span>
+  <h1 class="mt-4 text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+    Take Your Writing's <span class="text-brand">Pulse</span>
+  </h1>
+  <p class="mt-3 max-w-2xl mx-auto text-stone-400 text-base sm:text-lg">
+    Paste your text and get instant, surgeon-precise feedback: passive voice with one-click active rewrites,
+    sneaky adverbs, weasel words, clichés, repeated phrases — and your own custom crutch-word radar.
+  </p>
+</section>
+
+<!-- TOP AD -->
+<div class="no-print mx-auto max-w-6xl px-4 sm:px-6 pt-4" role="complementary" aria-label="Advertisement">
+  <div class="mx-auto text-center" style="max-width:728px">
+    <span class="block text-[10px] tracking-[0.18em] uppercase text-slate-400 mb-1.5">Advertisement</span>
+    <div class="flex justify-center overflow-hidden">
+      <div class="origin-top scale-[0.44] sm:scale-100 shrink-0">
+        <script>
+          atOptions = { 'key' : '4e68ac77881c17fe128a46565d9a4e8c', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
+        </script>
+        <script src="https://www.highrevenueformat.com/4e68ac77881c17fe128a46565d9a4e8c/invoke.js"></script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOOL -->
+<main class="mx-auto max-w-6xl px-4 sm:px-6 py-8">
+
+  <!-- SCORE + STATS BAR -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+    <div class="bg-stone-800/60 border border-stone-700 rounded-xl p-4 flex items-center gap-4 col-span-2 sm:col-span-1">
+      <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="26" fill="none" stroke="#292524" stroke-width="7"/>
+        <circle id="pp-score-ring" cx="32" cy="32" r="26" fill="none" stroke="#fb7185" stroke-width="7"
+          stroke-linecap="round" stroke-dasharray="163.36" stroke-dashoffset="163.36" transform="rotate(-90 32 32)" style="transition: stroke-dashoffset .6s ease, stroke .6s ease;"/>
+        <text id="pp-score" x="32" y="38" text-anchor="middle" fill="#e7e5e4" font-size="19" font-weight="800">–</text>
+      </svg>
+      <div>
+        <div class="text-xs uppercase tracking-widest text-stone-400">Style score</div>
+        <div id="pp-score-word" class="text-sm font-bold text-brand">Paste text to start</div>
+      </div>
+    </div>
+    <div class="bg-stone-800/60 border border-stone-700 rounded-xl p-4">
+      <div class="text-xs uppercase tracking-widest text-stone-400">Words</div>
+      <div id="pp-wordcount" class="text-2xl font-extrabold text-gold">0</div>
+    </div>
+    <div class="bg-stone-800/60 border border-stone-700 rounded-xl p-4">
+      <div class="text-xs uppercase tracking-widest text-stone-400">Sentences</div>
+      <div id="pp-sentencecount" class="text-2xl font-extrabold text-gold">0</div>
+    </div>
+    <div class="bg-stone-800/60 border border-stone-700 rounded-xl p-4">
+      <div class="text-xs uppercase tracking-widest text-stone-400">Issues found</div>
+      <div id="pp-issuecount" class="text-2xl font-extrabold text-brand">0</div>
+    </div>
+  </div>
+
+  <!-- EDITOR + HIGHLIGHTS SPLIT -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+    <div class="bg-stone-900 border border-stone-700 rounded-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-stone-800">
+        <span class="text-sm font-bold tracking-wide text-stone-300">✍️ Your draft</span>
+        <div class="flex gap-2">
+          <button id="pp-sample" class="text-xs font-semibold bg-stone-700 hover:bg-stone-600 text-stone-200 px-3 py-1.5 rounded-lg transition">Load sample</button>
+          <button id="pp-clear" class="text-xs font-semibold bg-stone-700 hover:bg-stone-600 text-stone-200 px-3 py-1.5 rounded-lg transition">Clear</button>
+        </div>
+      </div>
+      <textarea id="pp-input" rows="16" placeholder="Paste your essay, article, email, or story here… ProsePulse will read its pulse instantly."
+        class="editor-area pp-scroll w-full bg-stone-900 text-stone-100 p-5 outline-none resize-y placeholder:text-stone-600"></textarea>
+      <div class="px-4 py-3 border-t border-stone-800 flex items-center justify-between">
+        <span class="text-xs text-stone-500">100% in-browser · nothing leaves your device</span>
+        <button id="pp-analyze" class="text-sm font-extrabold bg-brand hover:bg-rose-400 text-ink px-6 py-2.5 rounded-xl transition">Check Style ⚡</button>
+      </div>
+    </div>
+
+    <div class="bg-stone-900 border border-stone-700 rounded-2xl overflow-hidden flex flex-col">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-stone-800">
+        <span class="text-sm font-bold tracking-wide text-stone-300">🔍 Highlighted readout</span>
+        <span class="text-xs text-stone-500">click any highlight to jump to its issue card</span>
+      </div>
+      <div id="pp-preview" class="editor-area pp-scroll flex-1 p-5 overflow-y-auto max-h-[460px] text-stone-200">
+        <span class="text-stone-600 italic">Your analyzed text will appear here with color-coded highlights…</span>
+      </div>
+      <div class="px-4 py-3 border-t border-stone-800 flex flex-wrap gap-2 text-[11px] font-semibold">
+        <span class="flex items-center gap-1.5"><i class="w-2.5 h-2.5 rounded-full inline-block" style="background:#fb7185"></i>Passive</span>
+        <span class="flex items-center gap-1.5"><i class="w-2.5 h-2.5 rounded-full inline-block" style="background:#facc15"></i>Adverb</span>
+        <span class="flex items-center gap-1.5"><i class="w-2.5 h-2.5 rounded-full inline-block" style="background:#fb923c"></i>Weasel</span>
+        <span class="flex items-center gap-1.5"><i class="w-2.5 h-2.5 rounded-full inline-block" style="background:#c084fc"></i>Cliché</span>
+        <span class="flex items-center gap-1.5"><i class="w-2.5 h-2.5 rounded-full inline-block" style="background:#38bdf8"></i>Crutch</span>
+        <span class="flex items-center gap-1.5"><i class="w-2.5 h-2.5 rounded-full inline-block" style="background:#a3e635"></i>Repeat</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DENSITY METERS -->
+  <section class="mt-6 bg-stone-900 border border-stone-700 rounded-2xl p-5">
+    <h2 class="text-lg font-extrabold mb-1">Density meters <span class="text-xs font-normal text-stone-500">— issues per 1,000 words, with pro targets</span></h2>
+    <div id="pp-meters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-3"></div>
+  </section>
+
+  <!-- ISSUE LIST + CRUTCH WORDS -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-6">
+    <section class="lg:col-span-2 bg-stone-900 border border-stone-700 rounded-2xl p-5">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-extrabold">Issues <span id="pp-filter-note" class="text-xs font-normal text-stone-500"></span></h2>
+        <div id="pp-filters" class="flex flex-wrap gap-1.5"></div>
+      </div>
+      <ul id="pp-issues" class="pp-scroll space-y-2.5 max-h-[520px] overflow-y-auto pr-1">
+        <li class="text-stone-500 italic text-sm p-4 text-center border border-dashed border-stone-700 rounded-xl">No analysis yet — paste text and hit “Check Style”.</li>
+      </ul>
+    </section>
+
+    <aside class="bg-stone-900 border border-stone-700 rounded-2xl p-5">
+      <h2 class="text-lg font-extrabold">🎯 My crutch words</h2>
+      <p class="text-xs text-stone-500 mt-1 mb-3">Your personal overused words. Saved on this device, checked every time.</p>
+      <div class="flex gap-2">
+        <input id="pp-crutch-input" type="text" placeholder="e.g. basically" maxlength="40"
+          class="flex-1 bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-gold placeholder:text-stone-600">
+        <button id="pp-crutch-add" class="text-sm font-bold bg-gold hover:bg-yellow-300 text-ink px-4 py-2 rounded-lg transition">Add</button>
+      </div>
+      <ul id="pp-crutch-list" class="mt-3 space-y-1.5"></ul>
+      <div class="mt-4 pt-4 border-t border-stone-800">
+        <h3 class="text-sm font-bold mb-2">📋 Repeated phrases</h3>
+        <ul id="pp-repeats" class="space-y-1.5 text-sm">
+          <li class="text-stone-500 italic text-xs">None detected yet.</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<!-- BOTTOM AD -->
+<div class="no-print mx-auto max-w-6xl px-4 sm:px-6 pb-4" role="complementary" aria-label="Advertisement">
+  <div class="mx-auto text-center" style="max-width:728px">
+    <span class="block text-[10px] tracking-[0.18em] uppercase text-slate-400 mb-1.5">Advertisement</span>
+    <div class="flex justify-center overflow-hidden">
+      <script async src="https://js.wpadmngr.com/static/adManager.js" data-admpid="464498"></script>
+    </div>
+  </div>
+</div>
+
+<!-- SEO ARTICLE -->
+<article class="mx-auto max-w-4xl px-4 sm:px-6 py-10 prose-article text-stone-300 leading-relaxed">
+  <h2 class="text-2xl sm:text-3xl font-extrabold text-stone-100 mb-4">The Free Writing Style Checker That Finds What Your Eyes Skip</h2>
+  <p>Every writer has a blind spot. You read your own draft three times, fix the typos, and still miss the
+  sentence that says <em>"The report was completed by the team in a very timely manner"</em> — a passive
+  construction stuffed with a weasel word, hiding in plain sight. Professional editors catch these on
+  instinct, but most of us don't have an editor on call. That's the gap a <strong>writing style checker
+  free</strong> of cost, signup, or friction is meant to fill — and it's exactly what ProsePulse was built to be.</p>
+  <p>Unlike grammar checkers that obsess over commas, a style checker looks at the <em>muscle</em> of your
+  prose: is it active or passive, concrete or hedged, fresh or recycled? ProsePulse scans your text the
+  moment you paste it and surfaces five classic style weaknesses — passive voice, adverbs, weasel words,
+  clichés, and repeated phrases — plus any personal crutch words you teach it. Everything runs entirely in
+  your browser, so your drafts never touch a server. Your manuscript, your privacy.</p>
+
+  <h3 class="text-xl font-bold text-stone-100 mt-8 mb-3">Why a passive voice checker matters more than you think</h3>
+  <p>Passive voice isn't grammatically wrong — but it is rhetorically expensive. <em>"Mistakes were made"</em>
+  tells you nothing about who made them. <em>"The feature was launched"</em> hides the team that did the
+  launching. In business writing, passive voice creates accountability fog. In fiction, it drains scenes of
+  energy. In academic writing, it bloats sentences until the argument suffocates.</p>
+  <p>A good <strong>passive voice checker</strong> does more than flag the problem — it shows you the way out.
+  ProsePulse detects the classic passive pattern (a form of "to be" followed by a past participle, like
+  <em>"was written"</em> or <em>"is being reviewed"</em>), highlights it in rose, and — the part most free
+  tools skip — generates a one-click rewrite that flips the sentence into active voice. <em>"The ball was
+  thrown by John"</em> becomes <em>"John threw the ball."</em> with a single tap. When there's no
+  "by"-phrase naming the actor, ProsePulse still drafts the active version and nudges you to name the doer,
+  because anonymous actions are usually the real problem.</p>
+  <p>You don't have to eliminate every passive — sometimes it's the right choice, like when the receiver of
+  the action matters more than the doer (<em>"The patient was discharged at noon"</em>). ProsePulse's density
+  meter keeps you honest instead of dogmatic: it measures passive constructions per 1,000 words against a
+  target of 30 or fewer, so you can see whether passives are a seasoning or the whole dish.</p>
+
+  <h3 class="text-xl font-bold text-stone-100 mt-8 mb-3">The adverb finder online writers actually need</h3>
+  <p>Stephen King famously advised writers to treat adverbs like dandelions: one on your lawn looks pretty,
+  a yard full of them is a weed problem. The trouble is that adverbs feel like precision. <em>"She ran
+  quickly"</em> seems vivid — until you realize <em>"she sprinted"</em> does the same work with half the
+  words and twice the punch. Weak verbs propped up by "-ly" adverbs are the hallmark of first-draft prose.</p>
+  <p>ProsePulse's <strong>adverb finder online</strong> scans for "-ly" words while ignoring the impostors —
+  words like <em>friendly</em>, <em>daily</em>, and <em>only</em> that end in "ly" but aren't adverbs. Each
+  flagged adverb comes with a concrete hint: swap the weak verb + adverb combo for a stronger verb. Over a
+  few sessions, you'll notice your own patterns. Maybe you <em>suddenly</em> realize you <em>quickly</em>
+  overuse <em>really</em> — and then you stop.</p>
+  <p>The adverb density meter targets 20 or fewer per 1,000 words. For reference, most published literary
+  fiction lands well under that; blog drafts routinely triple it. Watching the meter drop as you revise is
+  one of the most satisfying feedback loops in writing.</p>
+
+  <h3 class="text-xl font-bold text-stone-100 mt-8 mb-3">Weasel words, clichés, and the honesty of your prose</h3>
+  <p>Weasel words — <em>very, really, just, quite, basically, obviously</em> — are the packing peanuts of
+  language. They fill space without adding meaning. <em>"This is very important"</em> is weaker than
+  <em>"This decides the outcome."</em> When you catch yourself writing <em>clearly</em> or
+  <em>obviously</em>, ask what you're afraid the reader won't see — then show it instead of announcing it.</p>
+  <p>Clichés are weasel words' older cousins: phrases so overused they've lost all voltage. <em>At the end
+  of the day</em>, <em>think outside the box</em>, <em>low-hanging fruit</em> — your reader's eyes glaze
+  over them like banner ads. ProsePulse ships with a baked-in library of dozens of the worst offenders and
+  highlights them in violet, so you can replace them with something you actually mean. The cliché target is
+  strict — 5 or fewer per 1,000 words — because even one can make a paragraph feel borrowed.</p>
+
+  <h3 class="text-xl font-bold text-stone-100 mt-8 mb-3">Repeated phrases: the tic you can't hear in your own voice</h3>
+  <p>Every writer has tics. One novelist starts every third paragraph with <em>"In that moment"</em>; one
+  blogger can't stop writing <em>"the fact of the matter is"</em>. Because the phrase feels natural to you,
+  your brain skips it on rereads — but your readers notice by the third occurrence. ProsePulse's
+  repeated-phrase detector finds 3-to-5-word sequences that recur across your text, counts the repetitions,
+  and lets you click straight to each occurrence. It's the closest thing to having a brutally honest friend
+  read your draft.</p>
+
+  <h3 class="text-xl font-bold text-stone-100 mt-8 mb-3">Custom crutch words: a radar tuned to you</h3>
+  <p>Generic lists only go so far. Your personal crutch might be <em>actually</em>, <em>like</em>,
+  <em>sort of</em>, or some word you'd never suspect until someone points it out. ProsePulse lets you add
+  your own crutch words to a personal list that's saved in your browser's local storage — no account, no
+  cloud, no sync. Every analysis checks your custom list alongside the built-in detectors, and the words
+  highlight in blue so you can see exactly where your habit strikes. Delete a word from the list any time;
+  your list persists between sessions on the same device.</p>
+
+  <h3 class="text-xl font-bold text-stone-100 mt-8 mb-3">How to use the style score and density meters</h3>
+  <p>The style score (0–100) is a quick-read summary, not a grade on your worth as a writer. It starts at 100
+  and dips as each issue type's density crosses its target. A first draft scoring 62 is perfectly normal —
+  professional copy often lands in the 75–90 range after one revision pass. Use it as a before/after gauge:
+  run your draft, revise with the one-click passive rewrites and hints, run it again, and watch the number
+  climb.</p>
+  <p>The density meters are the real diagnostic tool. Each shows your count per 1,000 words next to its
+  target, with a color-coded bar: green when you're under target, amber when you're drifting, red when a
+  category is running hot. Different genres want different profiles — a legal memo tolerates more passives
+  than a thriller — so treat targets as guardrails, not laws.</p>
+
+  <h3 class="text-xl font-bold text-stone-100 mt-8 mb-3">Who is ProsePulse for?</h3>
+  <p><strong>Students</strong> use the passive voice checker to sharpen essays before submission — many
+  instructors quietly dock marks for flabby, passive-heavy prose. <strong>Bloggers and content marketers</strong>
+  run drafts through the adverb finder and cliché detector to keep posts punchy and original, which readers
+  (and search engines) reward. <strong>Job seekers</strong> scrub cover letters of weasel words like
+  <em>very</em> and <em>really</em> so achievements sound confident. <strong>Non-native English writers</strong>
+  get instant, judgment-free feedback on the patterns textbooks never cover. And <strong>novelists</strong>
+  use the repeated-phrase detector during revision passes to catch the tics that survive three read-throughs.</p>
+
+  <h3 class="text-xl font-bold text-stone-100 mt-8 mb-3">ProsePulse vs. other free style checkers</h3>
+  <p>Many free tools flag passive voice and stop there — or worse, they cap your word count, demand an
+  account, or paste your text into their servers for "AI processing." ProsePulse takes the opposite approach:
+  unlimited text, unlimited checks, zero signup, and all analysis happens locally in your browser via
+  JavaScript. The one-click passive-to-active rewrite is genuinely rare in free tools; most competitors show
+  you the problem and leave the fixing to you. The custom crutch-word list is rarer still — it's a feature
+  borrowed from professional editing workflows, where editors keep a personal "words to search" list for
+  each author they work with. Combined with click-to-jump navigation (click any issue card to land on its
+  exact location in your text) and per-category density targets, ProsePulse behaves less like a spellchecker
+  and more like a patient editor sitting beside you.</p>
+
+  <h3 class="text-xl font-bold text-stone-100 mt-8 mb-3">A 10-minute style workout</h3>
+  <p>Want a fast routine that actually improves your writing? Paste 300–500 words of a recent draft into
+  ProsePulse and spend ten minutes: first, apply the one-click rewrites to every passive flagged in rose.
+  Next, kill or replace every weasel word — be ruthless with <em>very</em> and <em>really</em>. Then handle
+  the adverbs: for each yellow highlight, try deleting it first; if the sentence goes limp, upgrade the
+  verb instead. Swap each cliché for a plain, concrete phrase. Finally, glance at repeated phrases and vary
+  at least half of them. Re-run the check. Most writers see their score jump 15–25 points in that single
+  pass — and the habits stick, because you made every decision yourself rather than accepting a robot's
+  rewrite of your whole paragraph.</p>
+  <p>Good style isn't talent; it's attention, repeated. ProsePulse just makes the attention part faster.
+  Paste your draft, take its pulse, and write the sharper version.</p>
+</article>
+
+<!-- FAQS -->
+<section class="mx-auto max-w-4xl px-4 sm:px-6 pb-12">
+  <h2 class="text-2xl font-extrabold text-stone-100 mb-5">Frequently asked questions</h2>
+  <div class="space-y-3">
+    <details class="faq bg-stone-900 border border-stone-700 rounded-xl">
+      <summary class="cursor-pointer px-5 py-4 font-bold text-stone-100 flex justify-between items-center">What is a passive voice checker?<span class="text-brand text-xl leading-none">+</span></summary>
+      <p class="px-5 pb-5 text-stone-400 text-sm leading-relaxed">A passive voice checker scans your writing for passive constructions — sentences where the subject receives the action instead of performing it, like "The cake was eaten." ProsePulse highlights each passive in rose, explains why it weakens the sentence, and offers a one-click rewrite that converts it to active voice, such as "Someone ate the cake." You stay in control: accept, edit, or ignore each suggestion.</p>
+    </details>
+    <details class="faq bg-stone-900 border border-stone-700 rounded-xl">
+      <summary class="cursor-pointer px-5 py-4 font-bold text-stone-100 flex justify-between items-center">Is this writing style checker really free?<span class="text-brand text-xl leading-none">+</span></summary>
+      <p class="px-5 pb-5 text-stone-400 text-sm leading-relaxed">Yes — completely. ProsePulse is a writing style checker free of cost, accounts, subscriptions, watermarks, and usage caps. You can paste texts of any length and run unlimited checks. There is no premium tier hiding the best features; passive-to-active rewrites, the adverb finder, crutch-word lists, and density meters are all available to everyone.</p>
+    </details>
+    <details class="faq bg-stone-900 border border-stone-700 rounded-xl">
+      <summary class="cursor-pointer px-5 py-4 font-bold text-stone-100 flex justify-between items-center">How does the adverb finder online work?<span class="text-brand text-xl leading-none">+</span></summary>
+      <p class="px-5 pb-5 text-stone-400 text-sm leading-relaxed">The adverb finder scans your text for "-ly" words and highlights them in yellow, while smartly skipping words that merely end in "ly" but aren't adverbs — like "friendly," "daily," or "only." Each flagged adverb comes with editing advice, typically to replace a weak verb + adverb pair ("walked slowly") with a stronger verb ("strolled"). A density meter tracks adverbs per 1,000 words against a target of 20 or fewer.</p>
+    </details>
+    <details class="faq bg-stone-900 border border-stone-700 rounded-xl">
+      <summary class="cursor-pointer px-5 py-4 font-bold text-stone-100 flex justify-between items-center">What are weasel words and clichés, and why flag them?<span class="text-brand text-xl leading-none">+</span></summary>
+      <p class="px-5 pb-5 text-stone-400 text-sm leading-relaxed">Weasel words (very, really, just, basically, obviously) are fillers that dilute your meaning without adding information — cutting them makes claims bolder and clearer. Clichés (at the end of the day, think outside the box, low-hanging fruit) are phrases readers have seen so often they stop registering. ProsePulse flags both with plain-language hints so you can replace them with concrete, original wording.</p>
+    </details>
+    <details class="faq bg-stone-900 border border-stone-700 rounded-xl">
+      <summary class="cursor-pointer px-5 py-4 font-bold text-stone-100 flex justify-between items-center">Can I add my own crutch words to watch for?<span class="text-brand text-xl leading-none">+</span></summary>
+      <p class="px-5 pb-5 text-stone-400 text-sm leading-relaxed">Yes. Use the "My crutch words" panel to add any words you personally overuse — they are saved in your browser's local storage and checked in every analysis, highlighted in blue. You can remove words from the list at any time. Because the list lives only on your device, it works offline and never leaves your computer.</p>
+    </details>
+    <details class="faq bg-stone-900 border border-stone-700 rounded-xl">
+      <summary class="cursor-pointer px-5 py-4 font-bold text-stone-100 flex justify-between items-center">Is my text private? Where does the analysis happen?<span class="text-brand text-xl leading-none">+</span></summary>
+      <p class="px-5 pb-5 text-stone-400 text-sm leading-relaxed">Entirely private. All analysis runs locally in your browser using JavaScript — your text is never uploaded to any server, stored, or used to train models. You can even disconnect from the internet after the page loads and the checker keeps working. Your custom crutch-word list is stored only in your browser's local storage.</p>
+    </details>
+  </div>
+</section>
+
+<!-- JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a passive voice checker?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A passive voice checker scans your writing for passive constructions — sentences where the subject receives the action instead of performing it, like 'The cake was eaten.' ProsePulse highlights each passive in rose, explains why it weakens the sentence, and offers a one-click rewrite that converts it to active voice, such as 'Someone ate the cake.' You stay in control: accept, edit, or ignore each suggestion." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this writing style checker really free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes — completely. ProsePulse is a writing style checker free of cost, accounts, subscriptions, watermarks, and usage caps. You can paste texts of any length and run unlimited checks. There is no premium tier hiding the best features; passive-to-active rewrites, the adverb finder, crutch-word lists, and density meters are all available to everyone." }
+    },
+    {
+      "@type": "Question",
+      "name": "How does the adverb finder online work?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The adverb finder scans your text for '-ly' words and highlights them in yellow, while smartly skipping words that merely end in 'ly' but aren't adverbs — like 'friendly,' 'daily,' or 'only.' Each flagged adverb comes with editing advice, typically to replace a weak verb + adverb pair ('walked slowly') with a stronger verb ('strolled'). A density meter tracks adverbs per 1,000 words against a target of 20 or fewer." }
+    },
+    {
+      "@type": "Question",
+      "name": "What are weasel words and clichés, and why flag them?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Weasel words (very, really, just, basically, obviously) are fillers that dilute your meaning without adding information — cutting them makes claims bolder and clearer. Clichés (at the end of the day, think outside the box, low-hanging fruit) are phrases readers have seen so often they stop registering. ProsePulse flags both with plain-language hints so you can replace them with concrete, original wording." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I add my own crutch words to watch for?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Use the 'My crutch words' panel to add any words you personally overuse — they are saved in your browser's local storage and checked in every analysis, highlighted in blue. You can remove words from the list at any time. Because the list lives only on your device, it works offline and never leaves your computer." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my text private? Where does the analysis happen?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Entirely private. All analysis runs locally in your browser using JavaScript — your text is never uploaded to any server, stored, or used to train models. You can even disconnect from the internet after the page loads and the checker keeps working. Your custom crutch-word list is stored only in your browser's local storage." }
+    }
+  ]
+}
+</script>
+
+<!-- PURE LOGIC LIB (inlined at build time) -->
+<script id="v3-prosepulse-style-checker-lib">
+'use strict';
+/*
+ * ProsePulse writing style checker — pure logic.
+ * No DOM access here. All functions are pure: they take plain values in
+ * and return plain values out. Offsets are character offsets into the
+ * original text so the UI can jump to any issue location.
+ */
+
+var WORD_RE = /[A-Za-z][A-Za-z'’-]*|[0-9]+/g;
+
+/* ---------- tokenization ---------- */
+
+// Split text into word tokens with character offsets.
+// Returns [{word, start, end}].
+function tokenize(text) {
+  var out = [];
+  if (typeof text !== 'string') return out;
+  WORD_RE.lastIndex = 0;
+  var m;
+  while ((m = WORD_RE.exec(text)) !== null) {
+    out.push({ word: m[0], start: m.index, end: m.index + m[0].length });
+  }
+  return out;
+}
+
+function lower(w) { return w.toLowerCase(); }
+
+// Split text into sentences with character offsets.
+// Returns [{sentence, start, end}].
+function splitSentences(text) {
+  var out = [];
+  if (typeof text !== 'string' || !text.trim()) return out;
+  var re = /[^.!?]+[.!?]+["'”’)]?|\S[^.!?]*$/g;
+  var m, i = 0;
+  while ((m = re.exec(text)) !== null) {
+    var s = m[0];
+    var start = m.index;
+    var end = start + s.length;
+    if (s.trim()) out.push({ sentence: s, start: start, end: end });
+    i++;
+    if (i > 5000) break; // safety cap
+  }
+  return out;
+}
+
+/* ---------- built-in word lists ---------- */
+
+var WEASEL_WORDS = [
+  'very', 'really', 'just', 'quite', 'rather', 'somewhat', 'basically',
+  'essentially', 'literally', 'actually', 'obviously', 'clearly', 'simply',
+  'merely', 'totally', 'completely', 'absolutely', 'definitely', 'certainly',
+  'undoubtedly', 'arguably', 'generally', 'usually', 'often', 'almost',
+  'nearly', 'somehow', 'whatever', 'anyway', 'anyhow', 'perhaps', 'maybe',
+  'probably', 'possibly', 'stuff', 'things', 'a lot', 'lots', 'many', 'much',
+  'several', 'various', 'numerous', 'countless', 'innumerable', 'some',
+  'any', 'every', 'each', 'all', 'everyone', 'everything', 'nothing',
+  'nobody', 'thing', 'something', 'anything', 'somewhere', 'everywhere'
+];
+
+var CLICHES = [
+  'at the end of the day', 'think outside the box', 'low hanging fruit',
+  'moving forward', 'going forward', 'in the long run', 'win win', 'win-win',
+  'synergy', 'leverage', 'circle back', 'touch base', 'deep dive',
+  'bandwidth', 'game changer', 'paradigm shift', 'best practice',
+  'best practices', 'mission critical', 'cutting edge', 'state of the art',
+  'out of the box', 'push the envelope', 'raise the bar', 'take it to the next level',
+  'the tip of the iceberg', 'a dime a dozen', 'barking up the wrong tree',
+  'hit the ground running', 'on the same page', 'let the cat out of the bag',
+  'once in a blue moon', 'under the weather', 'break the ice',
+  'costs an arm and a leg', 'ball is in your court', 'burning the midnight oil',
+  'bite the bullet', 'back to square one', 'piece of cake', 'read between the lines',
+  'the whole nine yards', 'think big', 'do more with less', 'at scale',
+  'double down', 'single source of truth', 'north star', 'holistic',
+  'robust', 'seamless', 'end to end', 'end-to-end', 'one stop shop',
+  'cradle to grave', 'soup to nuts', 'elephant in the room'
+];
+
+var BE_VERBS = {
+  am: true, is: true, are: true, was: true, were: true,
+  be: true, been: true, being: true
+};
+
+// Irregular past participles -> base verb.
+var IRREGULAR_PARTICIPLES = {
+  thrown: 'throw', written: 'write', broken: 'break', taken: 'take',
+  given: 'give', made: 'make', done: 'do', gone: 'go', seen: 'see',
+  chosen: 'choose', spoken: 'speak', driven: 'drive', risen: 'rise',
+  fallen: 'fall', forgotten: 'forget', hidden: 'hide', bitten: 'bite',
+  eaten: 'eat', drunk: 'drink', shaken: 'shake', stolen: 'steal',
+  frozen: 'freeze', woven: 'weave', sworn: 'swear', torn: 'tear',
+  worn: 'wear', born: 'bear', beaten: 'beat', begun: 'begin',
+  bitten2: 'bite', sung: 'sing', rung: 'ring', sprung: 'spring',
+  sunk: 'sink', drunk2: 'drink', spun: 'spin', struck: 'strike',
+  hung: 'hang', laid: 'lay', paid: 'pay', said: 'say', heard: 'hear',
+  meant: 'mean', sent: 'sent', spent: 'spend', built: 'build',
+  felt: 'feel', kept: 'keep', slept: 'sleep', swept: 'sweep',
+  taught: 'teach', thought: 'think', brought: 'bring', bought: 'buy',
+  caught: 'catch', fought: 'fight', sought: 'seek', sold: 'sell',
+  told: 'tell', found: 'find', lost: 'lose', shot: 'shoot',
+  sat: 'sit', stood: 'stand', understood: 'understand', won: 'win',
+  cut: 'cut', put: 'put', set: 'set', hit: 'hit', cost: 'cost',
+  hurt: 'hurt', shut: 'shut', split: 'split', spread: 'spread'
+};
+
+// Irregular base verb -> past tense.
+var IRREGULAR_PAST = {
+  throw: 'threw', write: 'wrote', break: 'broke', take: 'took', give: 'gave',
+  make: 'made', do: 'did', go: 'went', see: 'saw', choose: 'chose',
+  speak: 'spoke', drive: 'drove', rise: 'rose', fall: 'fell', forget: 'forgot',
+  hide: 'hid', bite: 'bit', eat: 'ate', drink: 'drank', shake: 'shook',
+  steal: 'stole', freeze: 'froze', weave: 'wove', swear: 'swore', tear: 'tore',
+  wear: 'wore', bear: 'bore', beat: 'beat', begin: 'began', sing: 'sang',
+  ring: 'rang', spring: 'sprang', sink: 'sank', spin: 'spun', strike: 'struck',
+  hang: 'hung', lay: 'laid', pay: 'paid', say: 'said', hear: 'heard',
+  mean: 'meant', send: 'sent', spend: 'spent', build: 'built', feel: 'felt',
+  keep: 'kept', sleep: 'slept', sweep: 'swept', teach: 'taught', think: 'thought',
+  bring: 'brought', buy: 'bought', catch: 'caught', fight: 'fought',
+  seek: 'sought', sell: 'sold', tell: 'told', find: 'found', lose: 'lost',
+  shoot: 'shot', sit: 'sat', stand: 'stood', understand: 'understood', win: 'won'
+};
+
+function pastTense(base) {
+  var w = (base || '').toLowerCase();
+  if (!w) return w;
+  if (IRREGULAR_PAST[w]) return IRREGULAR_PAST[w];
+  if (/[^aeiou]y$/.test(w)) return w.slice(0, -1) + 'ied';
+  if (/e$/.test(w)) return w + 'd';
+  return w + 'ed';
+}
+
+function thirdPersonPresent(base) {
+  var w = (base || '').toLowerCase();
+  if (!w) return w;
+  if (/(s|x|z|ch|sh)$/.test(w) || /o$/.test(w)) return w + 'es';
+  if (/[^aeiou]y$/.test(w)) return w.slice(0, -1) + 'ies';
+  return w + 's';
+}
+var LY_EXCEPTIONS = {
+  friendly: true, lovely: true, lonely: true, lively: true, daily: true,
+  weekly: true, monthly: true, yearly: true, hourly: true, only: true,
+  apply: true, supply: true, rely: true, imply: true, reply: true,
+  family: true, ally: true, belly: true, jelly: true, rally: true,
+  fully: true, wholly: true, holy: true, lowly: true, likely: true,
+  ugly: true, silly: true, chilly: true, costly: true, worldly: true,
+  elderly: true, orderly: true, timely: true, hardly: true, barely: true,
+  merely: true, surely: true, really: true, truly: true
+};
+
+/* ---------- part-of-speech-ish heuristics ---------- */
+
+function looksLikePastParticiple(word) {
+  var w = lower(word);
+  if (IRREGULAR_PARTICIPLES[w]) return true;
+  if (w.length > 4 && /ed$/.test(w)) return true; // e.g. completed, delivered
+  if (w.length > 3 && /(ied)$/.test(w)) return true;
+  return false;
+}
+
+function baseVerb(pastParticiple) {
+  var w = lower(pastParticiple);
+  if (IRREGULAR_PARTICIPLES[w]) return IRREGULAR_PARTICIPLES[w];
+  if (/ied$/.test(w) && w.length > 4) return w.slice(0, -3) + 'y';
+  if (/eed$/.test(w)) return w; // agreed, freed (keep simple)
+  if (/ed$/.test(w) && w.length > 3) {
+    var stem = w.slice(0, -2);
+    // doubled consonant: stopped -> stop, planned -> plan
+    if (/([bcdfghjklmnpqrstvwxz])\1$/.test(stem)) stem = stem.slice(0, -1);
+    return stem;
+  }
+  return w;
+}
+
+function looksLikeAdverb(word) {
+  var w = lower(word);
+  if (w.length < 5) return false;
+  if (!/ly$/.test(w)) return false;
+  if (LY_EXCEPTIONS[w]) return false;
+  return true;
+}
+
+/* ---------- detectors (return issues with offsets) ---------- */
+
+// issue: {type, start, end, text, label, hint, rewrite}
+
+function findAdverbs(tokens) {
+  var out = [];
+  for (var i = 0; i < tokens.length; i++) {
+    if (looksLikeAdverb(tokens[i].word)) {
+      out.push({
+        type: 'adverb', start: tokens[i].start, end: tokens[i].end,
+        text: tokens[i].word,
+        label: 'Adverb',
+        hint: 'Try a stronger verb instead of a weak verb + adverb. "Ran quickly" -> "sprinted".'
+      });
+    }
+  }
+  return out;
+}
+
+function findWeasels(tokens) {
+  var out = [];
+  var set = {};
+  for (var k = 0; k < WEASEL_WORDS.length; k++) set[WEASEL_WORDS[k]] = true;
+  for (var i = 0; i < tokens.length; i++) {
+    var w = lower(tokens[i].word);
+    if (set[w]) {
+      out.push({
+        type: 'weasel', start: tokens[i].start, end: tokens[i].end,
+        text: tokens[i].word,
+        label: 'Weasel word',
+        hint: 'Hedges and fillers dilute your point. Cut it or replace with a fact or number.'
+      });
+    }
+  }
+  return out;
+}
+
+function findCliches(text) {
+  var out = [];
+  var low = text.toLowerCase();
+  var seen = {};
+  for (var i = 0; i < CLICHES.length; i++) {
+    var c = CLICHES[i];
+    if (seen[c]) continue;
+    seen[c] = true;
+    var idx = 0;
+    while (true) {
+      idx = low.indexOf(c, idx);
+      if (idx === -1) break;
+      // word-boundary check
+      var before = idx === 0 ? ' ' : low[idx - 1];
+      var after = idx + c.length >= low.length ? ' ' : low[idx + c.length];
+      if (!/[a-z0-9]/.test(before) && !/[a-z0-9]/.test(after)) {
+        out.push({
+          type: 'cliche', start: idx, end: idx + c.length,
+          text: text.slice(idx, idx + c.length),
+          label: 'Cliché',
+          hint: 'A tired phrase. Say it plainly or with a concrete image instead.'
+        });
+      }
+      idx += c.length;
+    }
+  }
+  out.sort(function (a, b) { return a.start - b.start; });
+  return out;
+}
+
+function findCrutchWords(tokens, customList) {
+  var out = [];
+  var seen = {};
+  var list = [];
+  if (Array.isArray(customList)) {
+    for (var i = 0; i < customList.length; i++) {
+      var w = String(customList[i]).trim().toLowerCase();
+      if (w && !seen[w]) { seen[w] = true; list.push(w); }
+    }
+  }
+  var set = {};
+  for (var j = 0; j < list.length; j++) set[list[j]] = true;
+  for (var k = 0; k < tokens.length; k++) {
+    if (set[lower(tokens[k].word)]) {
+      out.push({
+        type: 'crutch', start: tokens[k].start, end: tokens[k].end,
+        text: tokens[k].word,
+        label: 'Crutch word',
+        hint: 'Your personal overused word. Delete it or swap in a synonym.'
+      });
+    }
+  }
+  return out;
+}
+
+// Passive voice: be-verb + (optional adverbs) + past participle, per sentence.
+// Returns issues with a passive->active rewrite suggestion.
+function findPassive(text) {
+  var out = [];
+  var sentences = splitSentences(text);
+  for (var s = 0; s < sentences.length; s++) {
+    var sent = sentences[s];
+    var toks = tokenize(sent.sentence);
+    for (var i = 0; i < toks.length; i++) {
+      var w = lower(toks[i].word);
+      if (!BE_VERBS[w]) continue;
+      // scan ahead for a past participle, skipping adverbs and short modifiers
+      var j = i + 1;
+      while (j < toks.length && looksLikeAdverb(toks[j].word) && j < i + 4) j++;
+      if (j >= toks.length) continue;
+      if (!looksLikePastParticiple(toks[j].word)) continue;
+      var participle = toks[j].word;
+      // look for "by ACTOR" after the participle
+      var byActor = null, actorStart = -1, actorEnd = -1;
+      var k = j + 1;
+      if (k < toks.length && lower(toks[k].word) === 'by' && k + 1 < toks.length) {
+        // actor = up to 4 following tokens (a short noun phrase)
+        var end = k + 1;
+        var limit = Math.min(k + 5, toks.length);
+        var parts = [];
+        while (end < limit) {
+          var pw = lower(toks[end].word);
+          if (/^(the|a|an|of)$/.test(pw) && parts.length > 0) break;
+          parts.push(toks[end]);
+          end++;
+          if (parts.length >= 4) break;
+        }
+        if (parts.length) {
+          byActor = parts.map(function (t) { return t.word; }).join(' ');
+          actorStart = parts[0].start; actorEnd = parts[parts.length - 1].end;
+        }
+      }
+      var subjTokens = toks.slice(0, i);
+      var subjText = subjTokens.map(function (t) { return t.word; }).join(' ');
+      var verb = baseVerb(participle);
+      var rewrite = buildActiveRewrite(subjText, verb, byActor, toks[i].word);
+      out.push({
+        type: 'passive',
+        start: sent.start + toks[i].start, end: sent.start + toks[j].end,
+        text: toks[i].word + ' ' + participle,
+        label: 'Passive voice',
+        hint: 'Passive hides who did the action. Flip to active for punchier prose.',
+        rewrite: rewrite,
+        detail: {
+          subject: subjText, verb: verb, actor: byActor,
+          sentStart: sent.start, sentEnd: sent.end
+        }
+      });
+      i = j; // don't double-count overlapping passives
+    }
+  }
+  return out;
+}
+
+// Build an active-voice rewrite suggestion. beVerb is the original be-verb
+// token, used to keep the tense of the rewrite.
+function buildActiveRewrite(subject, baseVerbWord, actor, beVerb) {
+  var subj = (subject || '').trim();
+  var actorClean = (actor || '').trim();
+  if (!subj && !actorClean) return '';
+  // lowercase subject when it becomes the object: "The ball" -> "the ball"
+  var subjObj = subj ? subj.charAt(0).toLowerCase() + subj.slice(1) : '';
+  var actorSubj = actorClean ? actorClean.charAt(0).toUpperCase() + actorClean.slice(1) : '';
+  var bv = (beVerb || '').toLowerCase();
+  var verb = (baseVerbWord || '');
+  if (/^(was|were)$/.test(bv)) verb = pastTense(verb);
+  else if (/^(is|are|am|being)$/.test(bv)) verb = thirdPersonPresent(verb);
+  if (actorClean && subj) {
+    return actorSubj + ' ' + verb + ' ' + subjObj + '.';
+  }
+  if (actorClean && !subj) {
+    return actorSubj + ' ' + verb + ' it.';
+  }
+  if (!actorClean && subj) {
+    return 'Someone ' + pastTense(baseVerbWord) + ' ' + subjObj + ' — name the doer to make it stronger.';
+  }
+  return '';
+}
+
+// Apply a passive rewrite to the full text given an issue produced by findPassive.
+function applyPassiveRewrite(text, issue) {
+  if (!issue || !issue.detail || !issue.rewrite) return text;
+  var sentStart = issue.detail.sentStart, sentEnd = issue.detail.sentEnd;
+  var sug = issue.rewrite;
+  // strip the advisory suffix for the auto-applied version
+  sug = sug.replace(/\s+— name the doer to make it stronger\.$/, '.');
+  if (typeof text !== 'string') return text;
+  return text.slice(0, sentStart) + sug + text.slice(sentEnd);
+}
+
+// Repeated 3–5 word phrases (case-insensitive, punctuation stripped).
+// Returns [{phrase, count, locations:[{start,end}]}].
+function findRepeatedPhrases(text, minWords, maxWords, minCount) {
+  minWords = minWords || 3; maxWords = maxWords || 5; minCount = minCount || 2;
+  var toks = tokenize(text);
+  var map = {};
+  for (var n = minWords; n <= maxWords; n++) {
+    for (var i = 0; i + n <= toks.length; i++) {
+      var words = [];
+      for (var j = 0; j < n; j++) words.push(lower(toks[i + j].word));
+      var key = words.join(' ');
+      // skip phrases made entirely of stop words
+      if (/^(the|a|an|and|of|to|in|is|it|that|this|for|on|with|as|at|by|from|or|an?)$/.test(key)) continue;
+      if (!map[key]) map[key] = { phrase: key, count: 0, locations: [] };
+      // only count non-overlapping-ish: allow overlap but record each
+      map[key].count++;
+      map[key].locations.push({ start: toks[i].start, end: toks[i + n - 1].end });
+    }
+  }
+  var out = [];
+  for (var key2 in map) {
+    if (map[key2].count >= minCount) out.push(map[key2]);
+  }
+  // prefer longer, more frequent phrases; cap results
+  out.sort(function (a, b) {
+    if (b.count !== a.count) return b.count - a.count;
+    return b.phrase.length - a.phrase.length;
+  });
+  // drop phrases that are substrings of a longer reported phrase with same count
+  var filtered = [];
+  for (var r = 0; r < out.length && filtered.length < 15; r++) {
+    var cand = out[r], keep = true;
+    for (var f = 0; f < filtered.length; f++) {
+      var big = filtered[f];
+      if (big.phrase.indexOf(cand.phrase) !== -1 && big.count >= cand.count) { keep = false; break; }
+    }
+    if (keep) filtered.push(cand);
+  }
+  return filtered;
+}
+
+/* ---------- scoring & densities ---------- */
+
+var DENSITY_TARGETS = {
+  adverb: { per1000: 20, label: 'Adverbs', targetText: '≤ 20 per 1,000 words' },
+  passive: { per1000: 30, label: 'Passive voice', targetText: '≤ 30 per 1,000 words' },
+  weasel: { per1000: 25, label: 'Weasel words', targetText: '≤ 25 per 1,000 words' },
+  cliche: { per1000: 5, label: 'Clichés', targetText: '≤ 5 per 1,000 words' },
+  crutch: { per1000: 15, label: 'Crutch words', targetText: '≤ 15 per 1,000 words' }
+};
+
+function density(count, wordCount) {
+  if (!wordCount) return 0;
+  return Math.round((count / wordCount) * 1000 * 10) / 10;
+}
+
+function gradeScore(issuesByType, wordCount) {
+  // Start at 100; penalize by weighted density over target.
+  var score = 100;
+  var keys = Object.keys(DENSITY_TARGETS);
+  for (var i = 0; i < keys.length; i++) {
+    var k = keys[i];
+    var d = density(issuesByType[k] || 0, wordCount);
+    var t = DENSITY_TARGETS[k].per1000;
+    if (d > t) score -= Math.min(18, (d - t) / t * 18);
+  }
+  return Math.max(0, Math.round(score));
+}
+
+// Master analysis. opts: {customWords: [...], includeCliches: bool}
+// Returns {wordCount, sentenceCount, issues:[...], counts:{}, densities:{}, score, repeats:[...]}.
+function analyze(text, opts) {
+  opts = opts || {};
+  var tokens = tokenize(text || '');
+  var wordCount = tokens.length;
+  var sentenceCount = splitSentences(text || '').length;
+
+  var passive = findPassive(text || '');
+  var adverbs = findAdverbs(tokens);
+  var weasels = findWeasels(tokens);
+  var cliches = findCliches(text || '');
+  var crutch = findCrutchWords(tokens, opts.customWords || []);
+  var repeats = wordCount >= 40 ? findRepeatedPhrases(text || '') : [];
+
+  var issues = [];
+  var push = function (arr) { for (var i = 0; i < arr.length; i++) issues.push(arr[i]); };
+  push(passive); push(adverbs); push(weasels); push(cliches); push(crutch);
+  issues.sort(function (a, b) { return a.start - b.start; });
+
+  // Also surface repeats as jumpable issues (first two locations).
+  for (var r = 0; r < repeats.length; r++) {
+    var rep = repeats[r];
+    for (var l = 0; l < Math.min(2, rep.locations.length); l++) {
+      issues.push({
+        type: 'repeat',
+        start: rep.locations[l].start, end: rep.locations[l].end,
+        text: text.slice(rep.locations[l].start, rep.locations[l].end),
+        label: 'Repeated phrase',
+        hint: '"' + rep.phrase + '" appears ' + rep.count + '×. Vary the wording.'
+      });
+    }
+  }
+  issues.sort(function (a, b) { return a.start - b.start; });
+
+  var counts = {
+    passive: passive.length, adverb: adverbs.length, weasel: weasels.length,
+    cliche: cliches.length, crutch: crutch.length, repeat: repeats.length
+  };
+  var densities = {};
+  var keys = Object.keys(DENSITY_TARGETS);
+  for (var i = 0; i < keys.length; i++) {
+    densities[keys[i]] = density(counts[keys[i]], wordCount);
+  }
+  return {
+    wordCount: wordCount, sentenceCount: sentenceCount,
+    issues: issues, counts: counts, densities: densities,
+    repeats: repeats, score: gradeScore(counts, wordCount)
+  };
+}
+
+/* ---------- exports for Node tests ---------- */
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    tokenize: tokenize, splitSentences: splitSentences,
+    findAdverbs: findAdverbs, findWeasels: findWeasels, findCliches: findCliches,
+    findCrutchWords: findCrutchWords, findPassive: findPassive,
+    buildActiveRewrite: buildActiveRewrite, applyPassiveRewrite: applyPassiveRewrite,
+    findRepeatedPhrases: findRepeatedPhrases, analyze: analyze,
+    density: density, gradeScore: gradeScore, baseVerb: baseVerb,
+    WEASEL_WORDS: WEASEL_WORDS, CLICHES: CLICHES, DENSITY_TARGETS: DENSITY_TARGETS
+  };
+}
+
+</script>
+
+<!-- UI WIRING (uses the pure lib above) -->
+<script>
+(function () {
+  'use strict';
+
+  var LS_KEY = 'prosepulse-crutch-v1';
+  var SAMPLE = 'The ball was thrown by John very quickly across the field. ' +
+    'At the end of the day, the report was completed by the team in a really timely manner. ' +
+    'She walked slowly toward the old building and basically stared silently at the broken window. ' +
+    'The decision was made without any discussion. Honestly, it was quite literally a game changer for the whole department. ' +
+    'The whole department celebrated the game changer with obvious pride. ' +
+    'In that moment, in that moment of quiet reflection, she finally understood the pattern.';
+
+  var $ = function (id) { return document.getElementById(id); };
+  var els = {
+    input: $('pp-input'), preview: $('pp-preview'), issues: $('pp-issues'),
+    meters: $('pp-meters'), filters: $('pp-filters'), filterNote: $('pp-filter-note'),
+    repeats: $('pp-repeats'), score: $('pp-score'), scoreWord: $('pp-score-word'),
+    scoreRing: $('pp-score-ring'), wordcount: $('pp-wordcount'),
+    sentencecount: $('pp-sentencecount'), issuecount: $('pp-issuecount'),
+    crutchInput: $('pp-crutch-input'), crutchList: $('pp-crutch-list')
+  };
+
+  var currentIssues = [];
+  var activeFilter = 'all';
+
+  var TYPE_META = {
+    passive: { label: 'Passive voice', color: '#fb7185' },
+    adverb:  { label: 'Adverb', color: '#facc15' },
+    weasel:  { label: 'Weasel word', color: '#fb923c' },
+    cliche:  { label: 'Cliché', color: '#c084fc' },
+    crutch:  { label: 'Crutch word', color: '#38bdf8' },
+    repeat:  { label: 'Repeated phrase', color: '#a3e635' }
+  };
+
+  function loadCrutch() {
+    try {
+      var raw = localStorage.getItem(LS_KEY);
+      var arr = raw ? JSON.parse(raw) : [];
+      return Array.isArray(arr) ? arr.filter(function (w) { return typeof w === 'string'; }) : [];
+    } catch (e) { return []; }
+  }
+  function saveCrutch(list) {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(list)); } catch (e) {}
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function buildHighlighted(text, issues) {
+    if (!text) return '<span class="text-stone-600 italic">Your analyzed text will appear here with color-coded highlights…</span>';
+    var sorted = issues.slice().sort(function (a, b) { return a.start - b.start; });
+    var html = '', pos = 0, idx = 0;
+    for (var i = 0; i < sorted.length; i++) {
+      var it = sorted[i];
+      if (it.start < pos) continue; // skip overlaps
+      if (it.start > text.length || it.end > text.length) continue;
+      html += esc(text.slice(pos, it.start));
+      html += '<span class="hl hl-' + it.type + '" data-i="' + idx + '">' + esc(text.slice(it.start, it.end)) + '</span>';
+      pos = it.end; idx++;
+    }
+    html += esc(text.slice(pos));
+    return html;
+  }
+
+  function renderMeters(result) {
+    var keys = ['passive', 'adverb', 'weasel', 'cliche', 'crutch'];
+    var html = '';
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i], target = DENSITY_TARGETS[k];
+      var d = result.densities[k] || 0;
+      var ratio = target.per1000 ? d / target.per1000 : 0;
+      var color = ratio <= 1 ? '#a3e635' : (ratio <= 2 ? '#facc15' : '#fb7185');
+      var width = Math.min(100, Math.round(ratio * 100));
+      html += '<div><div class="flex justify-between text-xs mb-1">' +
+        '<span class="font-bold" style="color:' + TYPE_META[k].color + '">' + target.label + '</span>' +
+        '<span class="text-stone-400 font-mono">' + d + ' / 1000</span></div>' +
+        '<div class="meter-track"><div class="meter-fill" style="width:' + width + '%;background:' + color + '"></div></div>' +
+        '<div class="text-[10px] text-stone-500 mt-1">target ' + target.targetText + '</div></div>';
+    }
+    els.meters.innerHTML = html;
+  }
+
+  function renderFilters(counts) {
+    var types = ['all'].concat(Object.keys(TYPE_META));
+    var html = '';
+    for (var i = 0; i < types.length; i++) {
+      var t = types[i];
+      var label = t === 'all' ? 'All' : TYPE_META[t].label;
+      var n = t === 'all' ? currentIssues.length : (counts[t] || 0);
+      var on = activeFilter === t;
+      html += '<button data-f="' + t + '" class="text-[11px] font-bold px-2.5 py-1 rounded-full border transition ' +
+        (on ? 'bg-gold text-ink border-gold' : 'bg-stone-800 text-stone-300 border-stone-700 hover:border-gold') + '">' +
+        esc(label) + ' (' + n + ')</button>';
+    }
+    els.filters.innerHTML = html;
+    var btns = els.filters.querySelectorAll('button');
+    for (var b = 0; b < btns.length; b++) {
+      btns[b].addEventListener('click', function () {
+        activeFilter = this.getAttribute('data-f');
+        renderIssueList();
+      });
+    }
+  }
+
+  function scoreWord(s) {
+    if (s >= 85) return 'Crisp & confident';
+    if (s >= 70) return 'Solid, minor trims';
+    if (s >= 50) return 'Needs a revision pass';
+    if (s > 0) return 'Rough draft territory';
+    return 'Paste text to start';
+  }
+
+  function renderIssueList() {
+    var list = activeFilter === 'all'
+      ? currentIssues
+      : currentIssues.filter(function (it) { return it.type === activeFilter; });
+    els.filterNote.textContent = list.length ? '— click a card to jump to it' : '';
+    if (!list.length) {
+      els.issues.innerHTML = '<li class="text-stone-500 italic text-sm p-4 text-center border border-dashed border-stone-700 rounded-xl">No issues in this view. Nice work — or try the sample text.</li>';
+      return;
+    }
+    var html = '';
+    for (var i = 0; i < list.length; i++) {
+      var it = list[i], meta = TYPE_META[it.type];
+      html += '<li class="issue-card bg-stone-800/70 border border-stone-700 hover:border-gold rounded-xl p-3.5" data-i="' + i + '">' +
+        '<div class="flex items-start justify-between gap-2">' +
+        '<span class="text-[10px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full" style="background:' + meta.color + '22;color:' + meta.color + '">' + meta.label + '</span>' +
+        '<span class="text-[10px] text-stone-500 font-mono">#' + (i + 1) + '</span></div>' +
+        '<div class="mt-1.5 text-sm text-stone-200 font-serif italic">“' + esc(it.text) + '”</div>' +
+        '<div class="mt-1 text-xs text-stone-400">' + esc(it.hint) + '</div>';
+      if (it.type === 'passive' && it.rewrite) {
+        html += '<div class="mt-2 bg-stone-900 border border-stone-700 rounded-lg p-2.5">' +
+          '<div class="text-[10px] uppercase tracking-widest text-stone-500 mb-1">Suggested active rewrite</div>' +
+          '<div class="text-sm text-gold font-serif">“' + esc(it.rewrite) + '”</div>' +
+          '<button class="pp-rewrite mt-1.5 text-[11px] font-extrabold bg-brand hover:bg-rose-400 text-ink px-3 py-1.5 rounded-lg transition" data-i="' + i + '">⚡ Apply rewrite</button></div>';
+      }
+      html += '</li>';
+    }
+    els.issues.innerHTML = html;
+
+    var cards = els.issues.querySelectorAll('.issue-card');
+    for (var c = 0; c < cards.length; c++) {
+      cards[c].addEventListener('click', function (e) {
+        if (e.target.classList && e.target.classList.contains('pp-rewrite')) return;
+        jumpToIssue(parseInt(this.getAttribute('data-i'), 10));
+      });
+    }
+    var rew = els.issues.querySelectorAll('.pp-rewrite');
+    for (var r = 0; r < rew.length; r++) {
+      rew[r].addEventListener('click', function (e) {
+        e.stopPropagation();
+        applyRewrite(parseInt(this.getAttribute('data-i'), 10));
+      });
+    }
+  }
+
+  function filteredIssues() {
+    return activeFilter === 'all'
+      ? currentIssues
+      : currentIssues.filter(function (it) { return it.type === activeFilter; });
+  }
+
+  function jumpToIssue(i) {
+    var list = filteredIssues();
+    var it = list[i];
+    if (!it) return;
+    // find matching highlight span by offsets
+    var spans = els.preview.querySelectorAll('.hl');
+    var best = null;
+    for (var s = 0; s < spans.length; s++) {
+      var sp = spans[s];
+      var idx = parseInt(sp.getAttribute('data-i'), 10);
+      if (!isNaN(idx) && currentIssues[idx] === it) { best = sp; break; }
+    }
+    if (best) {
+      best.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      best.classList.add('hl-flash');
+      setTimeout(function () { best.classList.remove('hl-flash'); }, 1600);
+    }
+  }
+
+  function applyRewrite(i) {
+    var list = filteredIssues();
+    var it = list[i];
+    if (!it || it.type !== 'passive') return;
+    els.input.value = applyPassiveRewrite(els.input.value, it);
+    runAnalysis();
+  }
+
+  function renderRepeats(repeats) {
+    if (!repeats.length) {
+      els.repeats.innerHTML = '<li class="text-stone-500 italic text-xs">None detected yet.</li>';
+      return;
+    }
+    var html = '';
+    for (var i = 0; i < Math.min(6, repeats.length); i++) {
+      var r = repeats[i];
+      html += '<li class="flex justify-between items-center bg-stone-800/70 border border-stone-700 rounded-lg px-2.5 py-1.5">' +
+        '<span class="font-serif italic text-stone-200 truncate">“' + esc(r.phrase) + '”</span>' +
+        '<span class="text-[10px] font-extrabold text-lime-300 ml-2">×' + r.count + '</span></li>';
+    }
+    els.repeats.innerHTML = html;
+  }
+
+  function renderCrutchList() {
+    var list = loadCrutch();
+    if (!list.length) {
+      els.crutchList.innerHTML = '<li class="text-stone-500 italic text-xs">No custom words yet — add your first above.</li>';
+      return;
+    }
+    var html = '';
+    for (var i = 0; i < list.length; i++) {
+      html += '<li class="flex justify-between items-center bg-stone-800/70 border border-stone-700 rounded-lg px-2.5 py-1.5 text-sm">' +
+        '<span class="text-stone-200">' + esc(list[i]) + '</span>' +
+        '<button class="pp-crutch-del text-stone-500 hover:text-brand text-xs font-bold" data-w="' + esc(list[i]) + '">✕</button></li>';
+    }
+    els.crutchList.innerHTML = html;
+    var dels = els.crutchList.querySelectorAll('.pp-crutch-del');
+    for (var d = 0; d < dels.length; d++) {
+      dels[d].addEventListener('click', function () {
+        var w = this.getAttribute('data-w');
+        saveCrutch(loadCrutch().filter(function (x) { return x !== w; }));
+        renderCrutchList();
+        runAnalysis();
+      });
+    }
+  }
+
+  function runAnalysis() {
+    var text = els.input.value;
+    var result = analyze(text, { customWords: loadCrutch() });
+    currentIssues = result.issues;
+
+    els.wordcount.textContent = result.wordCount;
+    els.sentencecount.textContent = result.sentenceCount;
+    els.issuecount.textContent = result.issues.length;
+
+    var circ = 163.36;
+    var shown = text.trim() ? result.score : 0;
+    els.scoreRing.style.strokeDashoffset = circ - (circ * shown / 100);
+    els.scoreRing.setAttribute('stroke', shown >= 85 ? '#a3e635' : (shown >= 60 ? '#facc15' : '#fb7185'));
+    els.score.textContent = text.trim() ? result.score : '–';
+    els.scoreWord.textContent = scoreWord(text.trim() ? result.score : 0);
+
+    els.preview.innerHTML = buildHighlighted(text, currentIssues);
+    renderMeters(result);
+    renderFilters(result.counts);
+    renderIssueList();
+    renderRepeats(result.repeats);
+  }
+
+  // preview highlight click -> jump to issue card
+  els.preview.addEventListener('click', function (e) {
+    var t = e.target;
+    if (t.classList && t.classList.contains('hl')) {
+      var idx = parseInt(t.getAttribute('data-i'), 10);
+      var it = currentIssues[idx];
+      if (it) {
+        activeFilter = 'all';
+        renderFilters(lastCounts());
+        renderIssueList();
+        var cards = els.issues.querySelectorAll('.issue-card');
+        for (var c = 0; c < cards.length; c++) {
+          if (parseInt(cards[c].getAttribute('data-i'), 10) === idx) {
+            cards[c].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            cards[c].style.borderColor = '#facc15';
+            (function (card) {
+              setTimeout(function () { card.style.borderColor = ''; }, 1600);
+            })(cards[c]);
+            break;
+          }
+        }
+      }
+    }
+  });
+
+  var lastCountsVal = null;
+  function lastCounts() { return lastCountsVal || {}; }
+
+  // wrap runAnalysis to stash counts
+  var _run = runAnalysis;
+  runAnalysis = function () { _run(); lastCountsVal = currentCounts(); };
+  function currentCounts() {
+    var c = { passive: 0, adverb: 0, weasel: 0, cliche: 0, crutch: 0, repeat: 0 };
+    for (var i = 0; i < currentIssues.length; i++) {
+      if (c[currentIssues[i].type] !== undefined) c[currentIssues[i].type]++;
+    }
+    return c;
+  }
+
+  // controls
+  var debounce = null;
+  els.input.addEventListener('input', function () {
+    clearTimeout(debounce);
+    debounce = setTimeout(runAnalysis, 450);
+  });
+  $('pp-analyze').addEventListener('click', runAnalysis);
+  $('pp-clear').addEventListener('click', function () {
+    els.input.value = '';
+    runAnalysis();
+    els.input.focus();
+  });
+  $('pp-sample').addEventListener('click', function () {
+    els.input.value = SAMPLE;
+    runAnalysis();
+  });
+
+  function addCrutchWord() {
+    var w = els.crutchInput.value.trim().toLowerCase().replace(/[^a-z'-]/g, '');
+    if (!w) return;
+    var list = loadCrutch();
+    if (list.indexOf(w) === -1) {
+      list.push(w);
+      saveCrutch(list);
+    }
+    els.crutchInput.value = '';
+    renderCrutchList();
+    runAnalysis();
+  }
+  $('pp-crutch-add').addEventListener('click', addCrutchWord);
+  els.crutchInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') addCrutchWord();
+  });
+
+  renderCrutchList();
+  runAnalysis();
+})();
+</script>
+</body>
+</html>
